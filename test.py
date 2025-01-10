@@ -1,38 +1,30 @@
 import requests
 from datetime import datetime
 
-# Discord webhook URL
-WEBHOOK_URL = "YOUR_WEBHOOK_URL"
+def send_discord_webhook(webhook_url, sender, title, body):
 
-# Variables
-day = datetime.now().day
-month = datetime.now().month
-year = datetime.now().year
-current_time = datetime.now().strftime("%H:%M:%S")
-sender = "Your Name or Identifier"
-title = "Your Embed Title"
-body = "This is the body content of the embed."
+    day = datetime.now().day
+    month = datetime.now().month
+    year = datetime.now().strftime("%y")
+    current_time = datetime.now().strftime("%H:%M:%S")
 
-# Embed data
-embed = {
-    "title": f"{title}  --  {day}/{month}/{year}",
-    "description": body,
-    "footer": {"text": f"From {sender}"},
-    "timestamp": datetime.now().isoformat(),
-    "color": 0xfccc04  # Embed color in hexadecimal
-}
 
-# Payload for the webhook
-payload = {
-    "embeds": [embed]
-}
+    embed = {
+        "title": f"{title}  --  {day}/{month}/{year}",
+        "description": body,
+        "footer": {"text": f"From {sender}"},
+        "timestamp": datetime.now().isoformat(),
+        "color": 0xfccc04
+    }
 
-# Sending the webhook
-response = requests.post(WEBHOOK_URL, json=payload)
+    payload = {
+        "embeds": [embed]
+    }
 
-# Check the response
-if response.status_code == 204:
-    print("Webhook sent successfully!")
-else:
-    print(f"Failed to send webhook. Status code: {response.status_code}")
-    print(response.text)
+    response = requests.post(webhook_url, json=payload)
+
+    if response.status_code == 204:
+        print("Webhook sent successfully!")
+    else:
+        print(f"Failed to send webhook. Status code: {response.status_code}")
+        print(response.text)
